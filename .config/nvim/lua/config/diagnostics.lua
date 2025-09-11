@@ -18,6 +18,6 @@ vim.diagnostic.config({
   update_in_insert = true,
 })
 
-vim.keymap.set("n", "<leader>d", function()
+vim.keymap.set("n", "<leader>e", function()
   vim.diagnostic.open_float({ scope = "line" })
 end, { noremap = true, silent = true })
