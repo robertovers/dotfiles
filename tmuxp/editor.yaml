@@ -1,4 +1,7 @@
 session_name: dev 
+start_directory: ${PROJECT_DIR}
+before_script: pwd
+
 windows:
   - window_name: editor
     layout: main-vertical
