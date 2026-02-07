@@ -9,20 +9,23 @@ return {
     { "<leader>d", "<cmd>lua vim.lsp.buf.definition()<CR>", desc = "LSP Go to Definition" },
   },
   config = function()
-    local lsp = require("lspconfig")
     local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-    local on_attach = function(client, bufnr)
-      -- You can add common LSP keybindings here if needed
-      vim.keymap.set('n', '<leader>a', vim.lsp.buf.hover, { buffer = bufnr, desc = "LSP Hover" })
-      vim.keymap.set('n', '<leader>d', vim.lsp.buf.definition, { buffer = bufnr, desc = "LSP Go to Definition" })
-      vim.keymap.set('n', '<leader>f', vim.lsp.buf.format, { buffer = bufnr, desc = "LSP Format" })
-    end
+    vim.api.nvim_create_autocmd('LspAttach', {
+      callback = function(args)
+        local bufnr = args.buf
+        vim.keymap.set('n', '<leader>a', vim.lsp.buf.hover, { buffer = bufnr, desc = "LSP Hover" })
+        vim.keymap.set('n', '<leader>d', vim.lsp.buf.definition, { buffer = bufnr, desc = "LSP Go to Definition" })
+        vim.keymap.set('n', '<leader>f', vim.lsp.buf.format, { buffer = bufnr, desc = "LSP Format" })
+      end,
+    })
+
+    vim.lsp.config('*', {
+      capabilities = capabilities,
+    })
 
     -- Lua Language Server
-    lsp.lua_ls.setup {
-      on_attach = on_attach,
-      capabilities = capabilities,
+    vim.lsp.config('lua_ls', {
       settings = {
         Lua = {
           diagnostics = {
@@ -30,67 +33,51 @@ return {
           },
           workspace = {
             library = vim.api.nvim_get_runtime_file("", true),
-            checkThirdParty = false
+            checkThirdParty = false,
           },
         },
       },
-    }
-
-    -- Rust Analyzer
-    lsp.rust_analyzer.setup {
-      on_attach = on_attach,
-      capabilities = capabilities
-    }
+    })
 
     -- Haskell Language Server
-    lsp.hls.setup {
-      on_attach = on_attach,
-      capabilities = capabilities,
-      root_dir = function() return vim.fn.getcwd() end
-    }
+    vim.lsp.config('hls', {
+      root_dir = function() return vim.fn.getcwd() end,
+    })
 
     -- Python Language Server
-    lsp.pylsp.setup {
-      on_attach = on_attach,
-      capabilities = capabilities,
+    vim.lsp.config('pylsp', {
       settings = {
         pylsp = {
           plugins = {
-            -- linter options
             flake8 = { enabled = true },
             pylint = { enabled = false },
             pyflakes = { enabled = false },
             pycodestyle = { enabled = false },
-            -- type checker
             pylsp_mypy = { enabled = true },
-            -- auto-completion options
             jedi_completion = { fuzzy = true },
-            -- import sorting
             pyls_isort = { enabled = true },
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    })
 
     -- TypeScript Language Server
-    lsp.tsserver.setup {
-      on_attach = on_attach,
-      capabilities = capabilities,
-      -- Recommended settings for tsserver
-      -- This ensures features like auto-imports work correctly.
+    vim.lsp.config('tsserver', {
       settings = {
         completions = {
-          completeFunctionCalls = true
+          completeFunctionCalls = true,
         },
         typescript = {
-          tsdk = "node_modules/typescript/lib", -- Adjust this path if your tsc is elsewhere
+          tsdk = "node_modules/typescript/lib",
         },
         javascript = {
           format = {
-            insertSpaceBeforeFunctionParenthesis = true
-          }
-        }
-      }
-    }
+            insertSpaceBeforeFunctionParenthesis = true,
+          },
+        },
+      },
+    })
+
+    vim.lsp.enable({ 'lua_ls', 'rust_analyzer', 'hls', 'pylsp', 'tsserver' })
   end,
 }
