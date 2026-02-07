@@ -1,10 +1,14 @@
+# utf-8
+export LC_ALL=en_IN.UTF-8
+export LANG=en_IN.UTF-8
+# utf-8 end
+
 # path
 export PATH="$HOME/.local/bin:$PATH"
 # path end
 
 # scripts
 eval "$(starship init zsh)"
-eval "$(devbox global shellenv)"
 # scripts end
 
 # aliases
@@ -39,10 +43,11 @@ export NVM_DIR="$HOME/.nvm"
 # nvm end
 
 # ghcup
-[ -f "/Users/robbie.overs/.ghcup/env" ] && . "/Users/robbie.overs/.ghcup/env" # ghcup-env
 # ghcup end
 
 # tmuxp
+export DISABLE_AUTO_TITLE=true
+
 start() {
   local DEV_DIR="~/dev"
 
@@ -75,3 +80,5 @@ start() {
   echo "$project_name started in the background."
 }
 # tmuxp end
+
+[ -f "/Users/robertovers/.ghcup/env" ] && . "/Users/robertovers/.ghcup/env" # ghcup-env
