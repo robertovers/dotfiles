@@ -1,15 +1,14 @@
 session_name: dev 
 start_directory: ${PROJECT_DIR}
-before_script: pwd
 
 windows:
   - window_name: editor
     layout: main-vertical
     panes:
-      - clear && nv
+      - clear && tmux resizep -t 0 -x 50% && nv
       - clear && claude
   - window_name: console
     layout: main-vertical
     panes:
-      - clear && lg
+      - clear && tmux resizep -t 0 -x 50% && lg
       - clear
