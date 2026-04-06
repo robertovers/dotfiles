@@ -26,6 +26,7 @@ return {
 
     telescope.setup({
       defaults = {
+        path_display = { "filename_first" },
         mappings = {
           n = {
             ["q"] = actions.close

@@ -23,5 +23,3 @@ vim.opt.hlsearch = false
 
 vim.opt.background = "dark"
 vim.opt.termguicolors = true
-
-vim.g.transparent_background = true

@@ -53,9 +53,15 @@ return {
             pylint = { enabled = false },
             pyflakes = { enabled = false },
             pycodestyle = { enabled = false },
-            pylsp_mypy = { enabled = true },
-            jedi_completion = { fuzzy = true },
+            pylsp_mypy = {
+              enabled = true,
+              python_executable = os.getenv("VIRTUAL_ENV") .. "/bin/python",
+            },
             pyls_isort = { enabled = true },
+            jedi = {
+              environment = os.getenv("VIRTUAL_ENV"),
+            },
+            jedi_completion = { fuzzy = true },
           },
         },
       },
